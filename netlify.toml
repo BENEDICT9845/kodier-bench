@@ -1,0 +1,13 @@
+# Netlify deploy config.
+# The deployable is a pre-built static file in public/. No build step is required
+# (public/index.html is committed). To rebuild from data/, run `python build.py` and commit.
+[build]
+  publish = "public"
+  # Optional: let Netlify rebuild from data/ on deploy (needs Python available):
+  # command = "python3 build.py"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "no-referrer"

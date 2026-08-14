@@ -1,0 +1,13 @@
+# Render.com static-site deploy config (Blueprint).
+# Serves the pre-built public/ folder. Update data -> run build.py -> commit -> auto-deploy.
+services:
+  - type: web
+    name: kodierbench
+    runtime: static
+    buildCommand: "python3 build.py || true"   # rebuilds public/index.html if Python is present
+    staticPublishPath: ./public
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
