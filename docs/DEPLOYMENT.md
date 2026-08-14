@@ -1,34 +1,64 @@
 # Deployment
 
-The site is the static folder **`public/`** (just `public/index.html`). Any static host works.
+The deployable site is the static folder **`public/`**. It contains the built
+`public/index.html`, so any static host can serve it.
 
-## Option A — Netlify, connected to this repo (recommended: auto-deploy on push)
-1. Netlify → **Add new site → Import an existing project** → GitHub → pick `kodier-bench`.
-2. Build settings:
-   - **Build command:** *(leave empty)* — `public/index.html` is committed, no build needed.
-     *(Optional: `python3 build.py` to rebuild from `data/` on deploy.)*
+## Option A - Render Static Site (recommended)
+
+Use this when you want the service managed directly in the Render dashboard instead of via a
+Blueprint.
+
+1. Render -> **New -> Static Site**.
+2. Connect `BENEDICT9845/kodier-bench`.
+3. Settings:
+   - **Branch:** `main`
+   - **Build command:** `python3 build.py`
    - **Publish directory:** `public`
-3. Deploy. Every `git push` to the default branch now auto-deploys.
-4. Rename the site (Site settings → Change site name) → e.g. `kodierbench.netlify.app`.
+4. Deploy. Every push to `main` now auto-deploys.
 
-## Option A′ — Netlify Drop (fastest, no repo needed)
-Drag the **`public/`** folder onto `app.netlify.com/drop`. Instant URL. (Manual — re-drag to update.)
+`render.yaml` is included only as an optional Blueprint convenience. Static sites are free on
+Render, but the Blueprint should not include a `plan: free` field.
 
-## Option B — Render (Blueprint)
-`render.yaml` is included. Render → **New → Blueprint** → connect `kodier-bench` → it reads
-`render.yaml` (static site, publish `./public`). Auto-deploys on push.
+If Render ever has trouble with Python in the static build environment, leave the build command
+empty or use a no-op command and rely on the committed `public/index.html`.
+
+## Option B - Netlify, connected to this repo
+
+1. Netlify -> **Add new site -> Import an existing project** -> GitHub -> pick `kodier-bench`.
+2. Build settings:
+   - **Build command:** leave empty because `public/index.html` is committed.
+     Optional: use `python3 build.py` to rebuild from `data/` on deploy.
+   - **Publish directory:** `public`
+3. Deploy. Every push to the default branch now auto-deploys.
+4. Rename the site, for example `kodierbench.netlify.app`.
+
+## Option C - Netlify Drop
+
+Drag the **`public/`** folder onto `app.netlify.com/drop`. This gives an instant URL, but updates
+are manual.
+
+## Option D - Render Blueprint
+
+`render.yaml` is included. Render -> **New -> Blueprint** -> connect `kodier-bench` -> it reads
+`render.yaml` as a static site and publishes `./public`.
 
 ## Updating a live site
+
 ```bash
 # after changing data or the app template:
-python3 build.py                 # regenerates public/index.html
-git add data public && git commit -m "data: refresh" && git push   # auto-deploys
+python3 build.py
+git add data public
+git commit -m "data: refresh"
+git push
 ```
 
-## Access control (optional, for the licence-caution phase)
-- **Cloudflare Access** (free) or Netlify password protection to gate by email while the
-  InEK reuse terms are unconfirmed (see NOTICE.md). Open/public is fine once those are cleared.
+## Access control
+
+- Cloudflare Access or Render/Netlify account-level controls can gate access during the
+  licence-caution phase.
+- Keep the deployment internal until the InEK reuse terms in `NOTICE.md` are confirmed.
 
 ## Notes
-- No server, DB, or secrets — nothing to configure beyond the publish directory.
+
+- No server, database, or secrets are required.
 - Everything runs client-side; user inputs never leave the browser.

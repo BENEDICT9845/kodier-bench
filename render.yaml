@@ -4,7 +4,6 @@ services:
   - type: web
     name: kodierbench
     runtime: static
-    plan: free
     buildCommand: "python3 build.py"
     staticPublishPath: ./public
     pullRequestPreviewsEnabled: true
