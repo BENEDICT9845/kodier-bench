@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Über KodierBench — Datenquellen & Methodik</title>
+<style>
+ :root{--ink:#141a24;--muted:#5c6675;--line:#e5e9f0;--bg:#f5f7fb;--card:#fff;--de:#0b6b4f;--de-soft:#e6f3ee;--accent:#2b5fb3;--warn:#8a5a12;--warn-soft:#fbf1df;}
+ @media (prefers-color-scheme:dark){:root{--ink:#f2f2f2;--muted:#a3a3a0;--line:#2c2c2a;--bg:#0d0d0d;--card:#161615;--de:#7fd7bb;--de-soft:#12332a;--accent:#8ec5ff;--warn:#c98500;--warn-soft:#2a2410;}}
+ *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;font-size:15px;}
+ .bar{background:#0b3b4e;color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;}
+ .bar .v1{font-weight:800;} .bar .v1 .k{color:#7fd7bb}.bar .v1 .b{color:#8ec5ff}
+ .bar a{margin-left:auto;color:#cfe0ea;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.25);padding:6px 12px;border-radius:8px;}
+ .wrap{max-width:820px;margin:0 auto;padding:8px 22px 70px;}
+ h1{font-size:23px;margin:22px 0 4px;} .sub{color:var(--muted);margin:0 0 18px;font-size:14px;}
+ h2{font-size:17px;margin:26px 0 6px;} .en{color:var(--muted);font-size:13.5px;font-style:italic;}
+ p{margin:8px 0;} ul{margin:8px 0;padding-left:20px;} li{margin:5px 0;}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 18px 14px;margin:14px 0;}
+ .callout{border-left:4px solid var(--de);background:var(--de-soft);padding:11px 15px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;}
+ .callout.warn{border-left-color:var(--warn);background:var(--warn-soft);}
+ table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px;} th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;} th{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;}
+ footer{border-top:1px solid var(--line);margin-top:26px;padding-top:14px;font-size:12px;color:var(--muted);}
+ code{background:var(--de-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;}
+</style></head>
+<body>
+<div class="bar"><span class="v1"><span class="k">Kodier</span><span class="b">Bench</span></span><a href="/">← Zum Tool</a></div>
+<div class="wrap">
+ <h1>Über KodierBench</h1>
+ <p class="sub">Datenquellen, Methodik und Datenschutz · <span class="en">Data sources, methodology & privacy</span></p>
+
+ <div class="card">
+  <h2>Was ist das? <span class="en">— What is this?</span></h2>
+  <p>KodierBench vergleicht die DRG-Kodierung eines Krankenhauses mit bundesweiten Referenzdaten: für jede DRG die kodierte Fallschwere gegenüber dem nationalen Durchschnitt, und für ausgewählte Leistungen die eigene Fallzahl im Vergleich zu allen Krankenhäusern.</p>
+  <p class="en">KodierBench benchmarks a hospital's DRG coding against national reference data — coded complexity vs the national average per DRG, and case volumes vs every other hospital for selected services. Evaluation prototype.</p>
+ </div>
+
+ <h2>Datenquellen &amp; Stand <span class="en">— Data sources &amp; vintage</span></h2>
+ <table>
+  <tr><th>Quelle</th><th>Verwendung</th><th>Stand</th></tr>
+  <tr><td>Strukturierte Qualitätsberichte der Krankenhäuser (§&nbsp;136b Abs.&nbsp;1 S.&nbsp;1 Nr.&nbsp;3 SGB&nbsp;V), G-BA</td><td>Fallzahlen je Krankenhaus (ICD/OPS) → Peer-Vergleich</td><td>Berichtsjahr 2024</td></tr>
+  <tr><td>Fallpauschalenbezogene Krankenhausstatistik / §&nbsp;21 KHEntgG, InEK</td><td>Fälle je DRG, Neben­diagnosen, Prozeduren</td><td>Datenjahr 2025</td></tr>
+  <tr><td>aG-DRG-Katalog, InEK</td><td>Bewertungsrelation (Kostengewicht) &amp; Verweildauer je DRG</td><td>Version 2026</td></tr>
+  <tr><td>ICD-10-GM &amp; OPS, BfArM</td><td>Kode-Bezeichnungen</td><td>2024/2026</td></tr>
+ </table>
+
+ <h2>Methodik <span class="en">— Methodology</span></h2>
+ <div class="card">
+  <p><b>Kodierte Komplexität (Ø Kostengewicht).</b> Je DRG-Basisgruppe der fallgewichtete Mittelwert der Bewertungsrelation, verglichen mit dem bundesweiten CMI (≈&nbsp;0,954). Ein niedriger Wert kann auf nicht erfasste Komplikationen/Komorbiditäten (CC) hindeuten — potenziell nicht abgebildete Erlöse.</p>
+  <p><b>Peer-Volumen.</b> Aus den Qualitätsberichten die Jahresfallzahl je Krankenhaus für eine Leistung; daraus die bundesweite Verteilung und das Perzentil der eigenen Fallzahl.</p>
+  <p class="en">Complexity = case-weighted mean cost weight per DRG group vs the national CMI. Peer volume = per-hospital annual case counts from the Quality Reports → national distribution + your percentile.</p>
+ </div>
+
+ <div class="callout warn"><b>Grenzen / Limitations.</b> Fallzahlen &lt;&nbsp;4 werden von der Quelle unterdrückt (Datenschutz) — Krankenhäuser unterhalb der Schwelle erscheinen nicht. Peer-Volumen derzeit nur Kardiologie. Die Fallschwere je Krankenhaus ist nicht öffentlich — die „eigene Zahl" gibt der Nutzer selbst ein. <span class="en">Counts &lt;4 are source-suppressed; peer volume is cardiology-only for now; per-hospital complexity is user-entered, not public.</span> „Ausreißer ≠ falsch".</div>
+
+ <h2>Datenschutz <span class="en">— Privacy</span></h2>
+ <div class="callout"><b>Keine Patientendaten.</b> Es werden ausschließlich aggregierte, veröffentlichte Statistiken verwendet. Eingaben bleiben im Browser und werden nicht übertragen oder gespeichert. <span class="en">No patient data; only published aggregates. Your inputs stay in your browser — nothing is transmitted or stored.</span></div>
+
+ <footer>
+  Attribution: Strukturierte Qualitätsberichte der Krankenhäuser nach §&nbsp;136b Abs.&nbsp;1 S.&nbsp;1 Nr.&nbsp;3 SGB&nbsp;V (Berichtsjahr&nbsp;2024) © Gemeinsamer Bundesausschuss · §&nbsp;21 KHEntgG / aG-DRG-Katalog © InEK GmbH · ICD-10-GM &amp; OPS © BfArM. Abgeleitete Aggregate. KodierBench ist ein unabhängiger Evaluations-Prototyp, nicht mit den genannten Institutionen verbunden.
+ </footer>
+</div></body></html>
