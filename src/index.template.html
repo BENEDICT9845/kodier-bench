@@ -107,12 +107,71 @@
   .tabbar button{background:transparent;border:1px solid rgba(255,255,255,.25);color:#cfe0ea;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
   .tabbar button.on{background:#fff;color:#0b3b4e;border-color:#fff;}
   .tabbar .sp{margin-left:auto;font-size:11.5px;opacity:.8}
-</style></head>
+</style>
+<style>
+  #tab-opportunity .pick{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;border:none;border-bottom:1px solid var(--border);background:transparent;color:var(--text-primary);border-radius:6px;padding:7px 8px;cursor:pointer;font-family:inherit;font-size:12.5px;}
+  #tab-opportunity .pick:hover{background:var(--surface-1);}
+  #tab-opportunity .pick.added{opacity:.4;cursor:default;}
+  #tab-opportunity .pick .pk{font-weight:700;color:var(--series-1);flex:0 0 42px;}
+  #tab-opportunity .pick .pl{flex:1;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #tab-opportunity .pick .pn{color:var(--muted);font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  #tab-opportunity .otbl{width:100%;border-collapse:collapse;font-size:13px;}
+  #tab-opportunity .otbl th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--border);font-weight:700;}
+  #tab-opportunity .otbl td{padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  #tab-opportunity .otbl .tl{color:var(--muted);font-size:11px;}
+  #tab-opportunity .otbl input{width:104px;padding:6px 8px;}
+  #tab-opportunity .otbl .natv{font-variant-numeric:tabular-nums;color:var(--text-secondary);text-align:right;}
+  #tab-opportunity .otbl .rm{border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;}
+  #tab-opportunity .otbl .rm:hover{color:var(--marker);}
+  #tab-opportunity .obar{display:flex;align-items:center;gap:10px;margin:9px 0 0;}
+  #tab-opportunity .obar .ok{width:52px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text-primary);}
+  #tab-opportunity .obar .otrack{flex:1;background:var(--surface-1);border:1px solid var(--border);border-radius:6px;height:22px;overflow:hidden;}
+  #tab-opportunity .obar .ofill{height:100%;border-radius:5px 0 0 5px;min-width:2px;transition:width .3s;}
+  #tab-opportunity .obar .oe{width:124px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;}
+  #tab-opportunity .ometa{font-size:11px;color:var(--muted);margin:2px 0 8px 62px;font-variant-numeric:tabular-nums;}
+</style>
+<style>
+  /* ---- mobile / small-screen layout ---- */
+  @media(max-width:820px){
+    html,body{overflow-x:hidden;}
+    .tabbar{flex-wrap:wrap;gap:6px 8px;padding:8px 12px;}
+    .tabbar .v1{flex-basis:100%;margin:0 0 2px;}
+    .tabbar .sp{display:none;}
+    .tabbar button,.tabbar a{padding:6px 11px;font-size:12.5px;}
+    .topbar{padding:10px 14px;}
+    .main{padding:16px 14px 48px;max-width:100%;}
+    .h1{font-size:19px;}
+    /* Opportunity Finder: stack the 5-col table into per-DRG cards */
+    #tab-opportunity .otbl thead{display:none;}
+    #tab-opportunity .otbl,#tab-opportunity .otbl tbody,#tab-opportunity .otbl tr,#tab-opportunity .otbl td{display:block;width:100%;}
+    #tab-opportunity .otbl tr{position:relative;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:0 0 10px;}
+    #tab-opportunity .otbl td{border:none;padding:5px 0;}
+    #tab-opportunity .otbl td[data-label]::before{content:attr(data-label);display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:3px;}
+    #tab-opportunity .otbl td.drgcell,#tab-opportunity .otbl td.rmcell{padding:0;}
+    #tab-opportunity .otbl td.drgcell{padding-right:28px;margin-bottom:2px;}
+    #tab-opportunity .otbl input{width:100%;}
+    #tab-opportunity .otbl .natv{text-align:left;}
+    #tab-opportunity .otbl .rmcell{position:absolute;top:8px;right:10px;width:auto;}
+    #tab-opportunity .obar .oe{width:100px;font-size:12.5px;}
+    #tab-opportunity .obar .ok{width:44px;}
+    #tab-opportunity .ometa{margin-left:0;}
+    #tab-opportunity .rail{max-height:none;}
+    #tab-opportunity #oppPicker{max-height:260px;}
+  }
+</style>
+<style>
+  /* prevent grid/flex min-content overflow (long German labels) */
+  .layout>.main,.main{min-width:0;}
+  .two{min-width:0;} .two>*{min-width:0;}
+  .ref{min-width:0;} .ref .rl{min-width:0;}
+</style>
+</head>
 <body>
 <div class="tabbar">
   <span class="v1"><span class="k">Kodier</span><span class="b">Bench</span> v1</span>
   <button data-t="complexity" class="on">DRG Complexity</button>
   <button data-t="peer">Peer Volume</button>
+  <button data-t="opportunity">Opportunity Finder</button>
   <a href="about.html" style="background:transparent;border:1px solid rgba(255,255,255,.25);color:#cfe0ea;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;">Über · Daten &amp; Methodik</a>
   <span class="sp">real German data · 2024/2025 · private internal test build</span>
 </div>
@@ -187,6 +246,139 @@
   </div>
 </div>
 <script id="data" type="application/json">__PEER__</script></div>
+<div id="tab-opportunity" style="display:none"><div class="viz-root">
+  <div class="topbar"><span class="logo"><span class="k">Kodier</span><span class="b">Bench</span></span>
+    <span class="badge">OPPORTUNITY FINDER · national reference</span>
+    <span class="badge warn">private prototype</span><span class="tagr" id="tagr"></span></div>
+  <div class="layout">
+    <aside class="rail">
+      <h3>Base rate</h3>
+      <label for="baseRate">Landesbasisfallwert (&euro;)</label>
+      <input type="number" id="baseRate" value="4300" step="50" min="0">
+      <div class="note" style="margin-top:8px">Varies by Bundesland (2025 &asymp; &euro;4,000&ndash;4,400). Adjust to yours &mdash; every &euro; figure scales with this.</div>
+      <h3>Add a DRG</h3>
+      <input id="oppSearch" placeholder="Search — e.g. F62, Herzinsuff" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-1);color:var(--text-primary);font-size:13px;font-family:inherit;">
+      <div class="note" style="margin-top:8px;padding:8px 10px">Listed by <b>coding leverage</b> — where the payment spread across severity tiers &times; national volume is largest.</div>
+      <div id="oppPicker" style="margin-top:6px;max-height:300px;overflow-y:auto"></div>
+    </aside>
+    <main class="main">
+      <h1 class="h1">Opportunity Finder &mdash; where coding accuracy moves the most money</h1>
+      <p class="sub">Enter your hospital's own aggregate figures for a few DRGs. The tool ranks where your coded complexity sits below the national reference &mdash; weighted by your volume and the base rate &mdash; so you can see where a coding review has the most revenue leverage. No patient data; nothing you type leaves your browser.</p>
+      <div style="margin:0 0 14px"><button id="oppExample" class="gbtn" style="display:inline-block;width:auto;margin:0">Load example figures</button></div>
+      <div class="stats" id="oppStats"></div>
+      <div class="card">
+        <h2>Your figures</h2>
+        <p class="cs">Pick DRGs from the left (sorted by coding leverage), then enter your annual cases and your average cost weight (&Oslash; Bewertungsrelation) for each.</p>
+        <div id="oppRows"></div>
+      </div>
+      <div class="card">
+        <h2>Where the gap is largest</h2>
+        <p class="cs">Estimated annual revenue effect if your coded complexity matched the national average, holding your volume constant. Ranked high &rarr; low.</p>
+        <div id="oppChart"></div>
+        <div id="oppAbove"></div>
+      </div>
+      <p class="note warn"><b>A gap is a signal to review, not proof of under-coding.</b> Your case mix may genuinely be less severe than the national average &mdash; the tool points you where to look, it does not audit charts. Method: gap = national &Oslash; cost weight &minus; your &Oslash; cost weight; &euro; = gap &times; your cases &times; base rate. National reference from InEK &sect;21 data (aG-DRG 2026); base rate is the Landesbasisfallwert you set.</p>
+    </main>
+  </div>
+</div></div>
+<script>
+(function(){
+  var R=document.getElementById('tab-opportunity');
+  var DATA=JSON.parse(document.querySelector('#tab-complexity #data').textContent);
+  var B=DATA.bases;
+  var rows=[];
+  var baseRate=4300;
+
+  var keys=Object.keys(B).filter(function(k){return B[k].mean_cw!=null && B[k].tiers && B[k].tiers.length>=2;});
+  function spread(k){var cw=B[k].tiers.map(function(x){return x.cw;}).filter(function(v){return v!=null;});if(cw.length<2)return 0;return Math.max.apply(null,cw)-Math.min.apply(null,cw);}
+  var lev={};
+  keys.forEach(function(k){lev[k]=spread(k)*B[k].total;});
+  var sortedKeys=keys.slice().sort(function(a,b){return lev[b]-lev[a];});
+
+  function row(k){return rows.find(function(r){return r.k===k;});}
+  function fmtE(n){return '€ '+Math.round(n).toLocaleString('en-US');}
+  function fmtN(n){return n.toLocaleString('en-US');}
+
+  var baseRateEl=R.querySelector('#baseRate');
+  baseRateEl.addEventListener('input',function(e){var v=parseFloat(e.target.value);baseRate=isNaN(v)?0:v;renderResults();});
+
+  var searchEl=R.querySelector('#oppSearch');
+  function renderPicker(q){
+    q=(q||'').trim().toLowerCase();
+    var list=q?keys.filter(function(k){return k.toLowerCase().indexOf(q)===0||B[k].label.toLowerCase().indexOf(q)>=0;}).sort(function(a,b){return lev[b]-lev[a];}):sortedKeys;
+    var hits=list.slice(0,18);
+    R.querySelector('#oppPicker').innerHTML=hits.length?hits.map(function(k){
+      var added=rows.some(function(r){return r.k===k;});
+      return '<button class="pick'+(added?' added':'')+'" data-k="'+k+'"'+(added?' disabled':'')+'>'+
+        '<span class="pk">'+k+'</span><span class="pl" title="'+B[k].label.replace(/"/g,'')+'">'+B[k].label+'</span>'+
+        '<span class="pn">cw '+B[k].mean_cw.toFixed(2)+' &middot; '+(B[k].total/1000).toFixed(0)+'k</span></button>';
+    }).join(''):'<div class="note">no match</div>';
+    R.querySelectorAll('#oppPicker .pick').forEach(function(btn){if(!btn.disabled)btn.onclick=function(){addRow(btn.dataset.k);};});
+  }
+  searchEl.addEventListener('input',function(e){renderPicker(e.target.value);});
+
+  function addRow(k){if(rows.some(function(r){return r.k===k;}))return;rows.push({k:k,cases:null,your:null});renderRows();renderPicker(searchEl.value);renderResults();}
+  function removeRow(k){rows=rows.filter(function(r){return r.k!==k;});renderRows();renderPicker(searchEl.value);renderResults();}
+
+  function renderRows(){
+    if(!rows.length){R.querySelector('#oppRows').innerHTML='<div class="note">Add DRGs from the list on the left to compare your coding against the national reference.</div>';return;}
+    R.querySelector('#oppRows').innerHTML='<table class="otbl"><thead><tr><th>DRG</th><th>Your annual cases</th><th>Your &Oslash; cost weight</th><th>National &Oslash;</th><th></th></tr></thead><tbody>'+
+      rows.map(function(r){var nat=B[r.k].mean_cw;
+        return '<tr data-k="'+r.k+'"><td class="drgcell"><b>'+r.k+'</b><br><span class="tl">'+B[r.k].label+'</span></td>'+
+          '<td data-label="Your annual cases"><input type="number" class="ic" min="0" value="'+(r.cases==null?'':r.cases)+'" placeholder="e.g. 300"></td>'+
+          '<td data-label="Your \u00d8 cost weight"><input type="number" class="iy" step="0.01" min="0" value="'+(r.your==null?'':r.your)+'" placeholder="e.g. '+(nat*0.9).toFixed(2)+'"></td>'+
+          '<td class="natv" data-label="National \u00d8">'+nat.toFixed(3)+'</td>'+
+          '<td class="rmcell"><button class="rm" title="remove">&times;</button></td></tr>';
+      }).join('')+'</tbody></table>';
+    R.querySelectorAll('#oppRows tr[data-k]').forEach(function(tr){
+      var k=tr.dataset.k;
+      tr.querySelector('.ic').addEventListener('input',function(e){var v=parseFloat(e.target.value);row(k).cases=isNaN(v)?null:v;renderResults();});
+      tr.querySelector('.iy').addEventListener('input',function(e){var v=parseFloat(e.target.value);row(k).your=isNaN(v)?null:v;renderResults();});
+      tr.querySelector('.rm').onclick=function(){removeRow(k);};
+    });
+  }
+
+  function calc(){
+    return rows.map(function(r){
+      var nat=B[r.k].mean_cw,gap=(r.your!=null)?nat-r.your:null;
+      var eur=(gap!=null&&gap>0&&r.cases!=null)?gap*r.cases*baseRate:0;
+      return {k:r.k,label:B[r.k].label,nat:nat,your:r.your,cases:r.cases,gap:gap,eur:eur};
+    });
+  }
+
+  function renderResults(){
+    var c=calc();
+    var withEur=c.filter(function(x){return x.eur>0;}).sort(function(a,b){return b.eur-a.eur;});
+    var total=withEur.reduce(function(s,x){return s+x.eur;},0);
+    var top=withEur[0];
+    R.querySelector('#oppStats').innerHTML=
+      '<div class="stat hero"><div class="l">Est. annual opportunity</div><div class="v">'+(total?fmtE(total):'—')+'</div><div class="l">across '+withEur.length+' DRG'+(withEur.length===1?'':'s')+' below national</div></div>'+
+      '<div class="stat"><div class="l">DRGs in view</div><div class="v">'+rows.length+'</div></div>'+
+      '<div class="stat"><div class="l">Largest single DRG</div><div class="v" style="font-size:18px">'+(top?top.k:'—')+'</div><div class="l">'+(top?fmtE(top.eur):'add your figures')+'</div></div>'+
+      '<div class="stat"><div class="l">Base rate used</div><div class="v" style="font-size:18px">'+fmtE(baseRate)+'</div><div class="l">Landesbasisfallwert</div></div>';
+    if(!withEur.length){R.querySelector('#oppChart').innerHTML='<div class="note">Enter your annual cases and your average cost weight for at least one DRG to see where the gap is largest. A gap appears when your coded complexity is below the national average.</div>';}
+    else{
+      var mx=withEur[0].eur;
+      R.querySelector('#oppChart').innerHTML=withEur.map(function(x,i){
+        var w=100*x.eur/mx;
+        return '<div class="obar"><div class="ok">'+x.k+'</div><div class="otrack"><div class="ofill" style="width:'+w+'%;background:'+(i===0?'var(--marker)':'var(--series-1)')+'"></div></div><div class="oe">'+fmtE(x.eur)+'</div></div>'+
+               '<div class="ometa">gap '+x.gap.toFixed(3)+' cw &times; '+fmtN(x.cases)+' cases &middot; your '+x.your.toFixed(2)+' vs nat '+x.nat.toFixed(3)+'</div>';
+      }).join('');
+    }
+    var above=c.filter(function(x){return x.gap!=null&&x.gap<=0&&x.cases!=null;});
+    R.querySelector('#oppAbove').innerHTML=above.length?'<div class="note">At or above the national reference (no gap): '+above.map(function(x){return x.k;}).join(', ')+'. Coding here already matches or exceeds the national average.</div>':'';
+  }
+
+  R.querySelector('#oppExample').onclick=function(){
+    var ex=sortedKeys.slice(0,3);var cs=[300,180,120];
+    rows=ex.map(function(k,i){return {k:k,cases:cs[i],your:+(B[k].mean_cw*0.86).toFixed(2)};});
+    renderRows();renderPicker(searchEl.value);renderResults();
+  };
+
+  R.querySelector('#tagr').textContent=keys.length+" DRG groups";
+  renderPicker('');renderRows();renderResults();
+})();
+</script>
 <footer style="max-width:1000px;margin:20px auto 8px;padding:14px 22px;border-top:1px solid rgba(120,120,120,.25);font-family:system-ui,sans-serif;font-size:11.5px;color:#6b7280;line-height:1.55">
 <b>Data sources &amp; attribution.</b> Strukturierte Qualit&auml;tsberichte der Krankenh&auml;user nach &sect;&nbsp;136b Abs.&nbsp;1 S.&nbsp;1 Nr.&nbsp;3 SGB&nbsp;V (Berichtsjahr&nbsp;2024, Gemeinsamer Bundesausschuss) &middot; Fallpauschalenbezogene Krankenhausstatistik / &sect;&nbsp;21 KHEntgG (InEK, Datenjahr&nbsp;2025) und aG-DRG-Katalog&nbsp;2026 &middot; ICD-10-GM und OPS (BfArM). Figures are <b>derived aggregates</b> &mdash; no patient-level data; nothing you enter leaves your browser. KodierBench is an independent evaluation prototype, not affiliated with the named institutions.
 </footer>
@@ -194,8 +386,9 @@
 document.querySelectorAll('.tabbar button').forEach(function(b){b.onclick=function(){
   var t=b.dataset.t;
   document.querySelectorAll('.tabbar button').forEach(function(x){x.classList.toggle('on',x===b);});
-  document.getElementById('tab-complexity').style.display=(t==='complexity')?'':'none';
-  document.getElementById('tab-peer').style.display=(t==='peer')?'':'none';
+  ['complexity','peer','opportunity'].forEach(function(name){
+    document.getElementById('tab-'+name).style.display=(t===name)?'':'none';
+  });
 };});
 </script>
 <script>
